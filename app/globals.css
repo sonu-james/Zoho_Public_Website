@@ -1,14 +1,16 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: #020617;
-  color: white;
-  font-family: Arial, sans-serif;
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
 }
 
-.gold-text {
-  color: #d4af37;
+html,
+body{
+ width:100%;
+ overflow-x:hidden;
+ font-family:Arial,sans-serif;
 }
