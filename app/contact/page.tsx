@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import axios from "axios";
+
 import {
   Phone,
   Mail,
@@ -9,8 +12,59 @@ import {
 } from "lucide-react";
 
 export default function ContactPage() {
+  const [loading, setLoading] =
+    useState(false);
+
+  const [formData, setFormData] =
+    useState({
+
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+
+    });
+
+  const handleSubmit =
+    async (e: any) => {
+      e.preventDefault();
+      setLoading(true);
+      try {
+        await axios.post(
+          "http://localhost:5000/api/leads/create",
+          formData
+        );
+
+        alert(
+          "Inquiry Submitted Successfully"
+        );
+
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      }
+
+      catch (error) {
+        console.log(error);
+        alert(
+          "Submission Failed"
+        );
+      }
+      finally {
+        setLoading(false);
+      }
+    };
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black flex items-center justify-center px-6 py-16">
+
+    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black flex
+    items-center
+    justify-center
+    px-6
+    py-16
+    ">
 
       <div className="
       w-full
@@ -28,161 +82,123 @@ export default function ContactPage() {
 
         {/* LEFT SECTION */}
 
-        <div className="relative bg-gradient-to-br from-yellow-500 to-yellow-600 p-12 text-black">
+        <div className="
+        relative
+        bg-gradient-to-br
+        from-yellow-500
+        to-yellow-600
+        p-12
+        text-black
+        ">
 
-          <div className="absolute top-0 right-0 h-60 w-60 bg-white/20 rounded-full blur-3xl" />
-
-          <h1 className="text-5xl font-bold leading-tight relative z-10">
+          <h1 className="
+          text-5xl
+          font-bold
+          ">
             Let’s Connect
           </h1>
-
-          <p className="mt-5 text-lg opacity-80 relative z-10">
-            Contact our UAE property consultants and get expert advice.
+          <p className="
+          mt-5
+          text-lg
+          opacity-80
+          ">
+            Contact our UAE property consultants.
           </p>
 
-
-          <div className="mt-14 space-y-8 relative z-10">
-
-            <div className="flex items-center gap-5">
-
-              <div className="bg-black/10 p-4 rounded-2xl">
-                <Phone size={22} />
-              </div>
-
+          <div className="
+          mt-14
+          space-y-8
+          ">
+            <div className="
+            flex
+            gap-5
+            ">
+              <Phone />
               <div>
-                <h4 className="font-semibold">
+                <h4>
                   Phone
                 </h4>
-
                 <p>
-                  +971 50 123 4567
+                  +971 50 1234567
                 </p>
-
               </div>
-
             </div>
 
 
-
-            <div className="flex items-center gap-5">
-
-              <div className="bg-black/10 p-4 rounded-2xl">
-                <Mail size={22} />
-              </div>
-
+            <div className="
+            flex
+            gap-5
+            ">
+              <Mail />
               <div>
-                <h4 className="font-semibold">
+                <h4>
                   Email
                 </h4>
-
                 <p>
                   info@propertyuae.com
                 </p>
-
               </div>
-
             </div>
 
-
-
-            <div className="flex items-center gap-5">
-
-              <div className="bg-black/10 p-4 rounded-2xl">
-                <MapPin size={22} />
-              </div>
-
+            <div className="
+            flex
+            gap-5
+            ">
+              <MapPin />
               <div>
-
-                <h4 className="font-semibold">
+                <h4>
                   Office
                 </h4>
-
                 <p>
-                  Dubai Marina, UAE
+                  Dubai Marina UAE
                 </p>
-
               </div>
-
             </div>
-
           </div>
-
-
-          <div className="mt-20 grid grid-cols-3 gap-4">
-
-            <div>
-              <h2 className="text-3xl font-bold">
-                500+
-              </h2>
-
-              <p>
-                Properties
-              </p>
-            </div>
-
-
-            <div>
-              <h2 className="text-3xl font-bold">
-                10K+
-              </h2>
-
-              <p>
-                Clients
-              </p>
-            </div>
-
-
-            <div>
-              <h2 className="text-3xl font-bold">
-                15+
-              </h2>
-
-              <p>
-                Cities
-              </p>
-            </div>
-
-          </div>
-
         </div>
-
-
 
         {/* RIGHT SECTION */}
 
-        <div className="bg-white p-12">
-
-          <h2 className="text-4xl font-bold text-slate-900">
-
+        <div className="
+        bg-white
+        p-12
+        ">
+          <h2 className="
+          text-4xl
+          font-bold
+          text-slate-900
+          ">
             Send Message
-
           </h2>
-
-
-          <p className="mt-3 text-gray-500">
-
-            Fill out the form and our team will contact you.
-
-          </p>
-
-
-
-          <form className="mt-10 space-y-6">
-
-
-            <div className="relative">
-
+          <form
+            onSubmit={handleSubmit}
+            className="
+            mt-10
+            space-y-6
+            "
+          >
+            {/* Name */}
+            <div className="
+            relative
+            ">
               <User
                 className="
                 absolute
-                top-1/2
                 left-4
+                top-1/2
                 -translate-y-1/2
                 text-gray-400
                 "
               />
-
               <input
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    name:
+                      e.target.value
+                  })
+                }
                 placeholder="Full Name"
                 className="
                 w-full
@@ -190,29 +206,36 @@ export default function ContactPage() {
                 rounded-2xl
                 pl-14
                 p-4
+                outline-none
                 focus:ring-2
                 focus:ring-yellow-500
-                outline-none
+                text-black
                 "
               />
-
             </div>
 
-
-
-            <div className="relative">
-
+            {/* Email */}
+            <div className="
+            relative
+            ">
               <Mail
                 className="
                 absolute
-                top-1/2
                 left-4
+                top-1/2
                 -translate-y-1/2
                 text-gray-400
                 "
               />
-
               <input
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    email:
+                      e.target.value
+                  })
+                }
                 placeholder="Email"
                 className="
                 w-full
@@ -220,29 +243,25 @@ export default function ContactPage() {
                 rounded-2xl
                 pl-14
                 p-4
-                focus:ring-2
-                focus:ring-yellow-500
-                outline-none
+                text-black
                 "
               />
-
             </div>
-
-
-
-            <div className="relative">
-
+            {/* Phone */}
+            <div className="
+            relative
+            ">
               <Phone
                 className="
                 absolute
-                top-1/2
                 left-4
+                top-1/2
                 -translate-y-1/2
                 text-gray-400
                 "
               />
 
-              <input
+              <input  value={formData.phone} onChange={(e) =>setFormData({...formData,phone:e.target.value})}
                 placeholder="Phone"
                 className="
                 w-full
@@ -250,30 +269,33 @@ export default function ContactPage() {
                 rounded-2xl
                 pl-14
                 p-4
-                focus:ring-2
-                focus:ring-yellow-500
-                outline-none
+                text-black
                 "
               />
-
             </div>
-
-
-
-            <div className="relative">
-
+            {/* Message */}
+            <div className="
+            relative
+            ">
               <MessageSquare
                 className="
                 absolute
-                top-6
                 left-4
+                top-5
                 text-gray-400
                 "
               />
-
               <textarea
                 rows={5}
-                placeholder="Write your message..."
+                value={formData.message}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    message:
+                      e.target.value
+                  })
+                }
+                placeholder="Message"
                 className="
                 w-full
                 border
@@ -281,41 +303,34 @@ export default function ContactPage() {
                 pl-14
                 pt-5
                 p-4
-                focus:ring-2
-                focus:ring-yellow-500
-                outline-none
+                resize-none
+                text-black
                 "
               />
-
             </div>
-
-
-
             <button
+              disabled={loading}
               className="
               w-full
               bg-yellow-500
-              hover:bg-yellow-400
-              duration-300
               py-5
               rounded-2xl
               font-semibold
-              text-lg
-              shadow-lg
-              hover:scale-[1.02]
+              hover:bg-yellow-400
               "
             >
-
-              Send Inquiry →
-
+              {
+                loading
+                  ?
+                  "Submitting..."
+                  :
+                  "Send Inquiry →"
+              }
             </button>
-
           </form>
-
         </div>
-
       </div>
-
     </main>
   );
+
 }
